@@ -1,22 +1,12 @@
 module SSIM
   module Records
     class Base
-      attr_accessor :type, :serial_number
-
-      def self.parse(row)
-        raise InvalidRecordError unless (type = row[0])
-        return if (type = type.to_i) <= 0
-
-        RECORD_TYPES[type].new.tap { |r| r.parse(row) }
-      end
-
-      def parse(record)
-        @type = record[0].to_i
-        @serial_number = record[194..199]
+      def parse(row)
+        raise NotImplementedError
       end
 
       def to_hash
-        instance_values
+        Hash[instance_variables.map { |name| [name[1..-1], instance_variable_get(name)] }]
       end
 
       private

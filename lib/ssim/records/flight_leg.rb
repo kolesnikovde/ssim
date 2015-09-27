@@ -1,16 +1,16 @@
 module SSIM
   module Records
     class FlightLeg < Base
-      attr_accessor :flight_number,
-                    :itinerary_variation_id,
-                    :from_date,
-                    :to_date,
-                    :days_of_operations,
-                    :departure_point,
-                    :departure_time,
-                    :arrival_point,
-                    :arrival_time,
-                    :aircraft_type
+      attr_reader :flight_number,
+                  :itinerary_variation_id,
+                  :from_date,
+                  :to_date,
+                  :days_of_operations,
+                  :departure_point,
+                  :departure_time,
+                  :arrival_point,
+                  :arrival_time,
+                  :aircraft_type
 
       def parse(record)
         @flight_number          = record[5..8]
@@ -25,15 +25,10 @@ module SSIM
         @aircraft_type          = record[72..74]
       end
 
-      def points_matches?(departure = nil, arrival = nil)
-        (departure ? (departure_point == departure) : true) \
-          && (arrival ? (arrival_point == arrival) : true)
-      end
-
       private
 
       def parse_doo(wdays)
-        wdays.split('').reject(&:blank?).map(&:to_i)
+        wdays.chars.reject { |c| c == ' ' }.map!(&:to_i)
       end
     end
   end

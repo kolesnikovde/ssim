@@ -1,9 +1,7 @@
 module SSIM
   module Records
     class Carrier < Base
-      attr_accessor :from_date,
-                    :to_date,
-                    :created_at
+      attr_reader :from_date, :to_date, :created_at
 
       def parse(record)
         @from_date  = parse_date(record[14..20])
